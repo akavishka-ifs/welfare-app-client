@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, { useContext, useEffect } from 'react'
 import './App.css';
+import PageView from './components/PageView';
+import SignIn from './components/SignIn';
+import {AppContext} from './contexts/AppContext';
+
+
+{/*https://github.com/mui/material-ui/tree/v5.10.7/docs/data/material/getting-started/templates/dashboard*/}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const {username, isAuthenticated , logIn, logOut} = useContext(AppContext); 
+  
+  useEffect(() => {
+		
+		if (isAuthenticated) {
+			//do fetching some data for the pageview component
+		}
+	}, [isAuthenticated]);
+
+  return isAuthenticated ? (<PageView/>) : (<SignIn/>);
+  
 }
 
 export default App;
