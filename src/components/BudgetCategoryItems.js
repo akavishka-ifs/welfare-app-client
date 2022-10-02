@@ -6,14 +6,14 @@ import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function BudgetCategoryItems() {
   return (
@@ -43,6 +43,11 @@ export default function BudgetCategoryItems() {
               Budget Category Items
             </Typography>
             <Grid container spacing={2} sx={{ p: 2 }} columns={12}>
+              <Grid item xs={12} sx={{ border: 0, p: 0 }}>
+                  <Stack direction="row" spacing={2} sx={{ margin: 0 }}>
+                    <Button variant="outlined">+Add</Button>
+                  </Stack>
+              </Grid>
               <Grid item xs={4} sx={{ border: 0, p: 2 }}>
                 <List>
                   <ListItem disablePadding>
@@ -51,7 +56,7 @@ export default function BudgetCategoryItems() {
                     </ListItemButton>
                   </ListItem>
                   <ListItem disablePadding>
-                    <ListItemButton component="a" href="#simple-list">
+                    <ListItemButton>
                       <ListItemText primary="Snacks for the Bus" />
                     </ListItemButton>
                   </ListItem>
@@ -77,7 +82,7 @@ export default function BudgetCategoryItems() {
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemButton>
-                      <ListItemText primary="RIU Ahungalle" />
+                      <ListItemText primary="Room Reservation" />
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -90,12 +95,22 @@ export default function BudgetCategoryItems() {
                     label="ItemName"
                     variant="outlined"
                   />
-                  <TextField
-                    sx={{ margin: 2}}
-                    id="categoryitemtype"
-                    label="ItemType"
-                    variant="outlined"
-                  />
+                  <FormControl sx={{ m: 2, minWidth: 250 }}>
+                  <InputLabel id="budgetcategoryselectlabel">
+                    Budget Category
+                  </InputLabel>
+                  <Select
+                    labelId="budgetcategoryselectlabel"
+                    id="budgetcategoryselect"
+                    label="Budget Category Item"
+                  >
+                    <MenuItem value={"Transportation"}>Transportation</MenuItem>
+                    <MenuItem value={"Food & Beverages"}>Food & Beverages</MenuItem>
+                    <MenuItem value={"Alchohol & Bites"}>Alchohol & Bites</MenuItem>
+                    <MenuItem value={"Tips"}>Tips</MenuItem>
+                    <MenuItem value={"Accomodation"}>Accomodation</MenuItem>
+                  </Select>
+                </FormControl>
                   <TextField
                     sx={{ margin: 2}}
                     id="itemdescription"
@@ -103,7 +118,6 @@ export default function BudgetCategoryItems() {
                     multiline
                   />
                   <Stack direction="row" spacing={2} sx={{ margin: 2}}>
-                    <Button variant="outlined">+Add</Button>
                     <Button variant="outlined">Save</Button>
                     <Button variant="outlined">Delete</Button>
                   </Stack>

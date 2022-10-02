@@ -6,7 +6,6 @@ import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -43,6 +42,11 @@ export default function BudgetCategories() {
               Budget Categories
             </Typography>
             <Grid container spacing={2} sx={{ p: 2 }} columns={12}>
+              <Grid item xs={12} sx={{ border: 0, p: 0 }}>
+                  <Stack direction="row" spacing={2} sx={{ margin: 0 }}>
+                    <Button variant="outlined">+Add</Button>
+                  </Stack>
+              </Grid>
               <Grid item xs={4} sx={{ border: 0, p: 2 }}>
                 <List>
                   <ListItem disablePadding>
@@ -51,7 +55,7 @@ export default function BudgetCategories() {
                     </ListItemButton>
                   </ListItem>
                   <ListItem disablePadding>
-                    <ListItemButton component="a" href="#simple-list">
+                    <ListItemButton>
                       <ListItemText primary="Food & Beverages" />
                     </ListItemButton>
                   </ListItem>
@@ -87,7 +91,6 @@ export default function BudgetCategories() {
                     />
                   </FormGroup>
                   <Stack direction="row" spacing={2} sx={{ margin: 2}}>
-                    <Button variant="outlined">+Add</Button>
                     <Button variant="outlined">Save</Button>
                     <Button variant="outlined">Delete</Button>
                   </Stack>
@@ -96,6 +99,6 @@ export default function BudgetCategories() {
             </Grid>
           </Paper>
         </Grid>
-      </Box>
+    </Box>
   )
 }

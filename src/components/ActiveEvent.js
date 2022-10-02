@@ -6,7 +6,6 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -14,9 +13,7 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 
 export default function ActiveEvent() {
   return (
@@ -46,6 +43,11 @@ export default function ActiveEvent() {
             Active Event
           </Typography>
           <Grid container spacing={2} sx={{ p: 2 }} columns={12}>
+            <Grid item xs={12} sx={{ border: 0, p: 0 }}>
+              <Stack direction="row" spacing={2} sx={{ margin: 0 }}>
+                  <Button variant="outlined">+Add</Button>
+                </Stack>
+            </Grid>
             <Grid item xs={4} sx={{ border: 0, p: 2 }}>
               <List>
                 <ListItem disablePadding>
@@ -90,7 +92,6 @@ export default function ActiveEvent() {
                   />
                 </FormGroup>
                 <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
-                  <Button variant="outlined">+Add</Button>
                   <Button variant="outlined">Activate Event</Button>
                   <Button variant="outlined">Delete</Button>
                 </Stack>
