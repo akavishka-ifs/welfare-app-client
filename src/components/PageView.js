@@ -121,6 +121,7 @@ function PageViewContent() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
+              backgroundColor : '#622569' 
             }}
           >
             <IconButton
