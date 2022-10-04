@@ -236,7 +236,6 @@ export default function Vendors() {
                 </Box>
                 <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
                   <Button variant="outlined">Print</Button>
-                  <Button variant="outlined">Delete</Button>
                   <Button variant="outlined">Filter</Button>
                 </Stack>
               </Box>
