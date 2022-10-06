@@ -23,6 +23,7 @@ import {Routes, Route} from 'react-router-dom';
 import {AppContext} from '../contexts/AppContext';
 import Lookups from './Lookups';
 import Documents from './Documents';
+import Default from './Default';
 import Vendors from './Vendors';
 import Transactions from './Transactions';
 
@@ -231,6 +232,10 @@ function PageViewContent() {
               <Route 
               path = '/transactions'
               element = {<Transactions/>}
+              />
+               <Route 
+              path = '/'
+              element = {<Default />}
               />
             </Routes>
             </Grid>
