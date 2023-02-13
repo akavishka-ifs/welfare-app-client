@@ -14,71 +14,87 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
-
+import {useQuery} from 'react-query';
+import axios from 'axios';
 export default function Vendors() {
   //need to fetch these dynamically and set the state var
+console.log('inside Vendors and going to load the vendors');
+  const {isLoading, data} = useQuery('getAllVendors',() => {
+      return axios.get('https://localhost:7115/vendors');
+  })
   const vendorList = [
     {
-      balance: "1200",
-      budgetcategoryitemselect: "Snacks for the Bus",
-      contactnumber: "0112899099",
-      contactpersonname: "Mr.Anurudda",
+      balancePayment: "1200",
+      budgetCategoryItemId: "Snacks for the Bus",
+      phone: "0112899099",
+      contactName: "Mr.Anurudda",
       designation: "Manager",
       email: "anna@gmail.com",
-      paidtotal: "",
-      totalcost: "3000",
+      payedAmount: "",
+      totalCost: "3000",
       vendorname: "FAB",
       vendorId: 1,
-      vendorselected: "on",
+      vendorSelected: "on",
     },
     {
-      balance: "50000",
-      budgetcategoryitemselect: "Bus",
-      contactnumber: "0112899094",
-      contactpersonname: "Mr.Anuruddika",
+      balancePayment: "50000",
+      budgetCategoryItemId: "Bus",
+      phone: "0112899094",
+      contactName: "Mr.Anuruddika",
       designation: "Manager",
       email: "annaaa@gmail.com",
-      paidtotal: "50000",
-      totalcost: "100000",
+      payedAmount: "50000",
+      totalCost: "100000",
       vendorname: "D.S.Gunasekara",
       vendorId: 2,
-      vendorselected: "on",
+      S: "on",
     },
     {
-      balance: "",
-      budgetcategoryitemselect: "Liquor",
-      contactnumber: "0112897099",
-      contactpersonname: "Mr.Mewan",
+      balancePayment: "",
+      budgetCategoryItemId: "Liquor",
+      phone: "0112897099",
+      contactName: "Mr.Mewan",
       designation: "Manager",
       email: "anna9099@gmail.com",
-      paidtotal: "",
-      totalcost: "10000",
+      payedAmount: "",
+      totalCost: "10000",
       vendorname: "Ariyapala Wine Stores",
       vendorId: 3,
-      vendorselected: "on",
+      S: "on",
     },
     {
-      balance: "",
-      budgetcategoryitemselect: "Room Reservation",
-      contactnumber: "0112199099",
-      contactpersonname: "Mr.Janik",
+      balancePayment: "",
+      budgetCategoryItemId: "Room Reservation",
+      phone: "0112199099",
+      contactName: "Mr.Janik",
       designation: "Asst-Manager",
       email: "anna2ew2w@gmail.com",
-      paidtotal: "",
-      totalcost: "100000",
+      payedAmount: "",
+      totalCost: "100000",
       vendorname: "Shangrilla Hambantota",
       vendorId: 4,
-      vendorselected: "on",
+      S: "on",
     },
   ];
-  const [vendors, setVendors] = useState(vendorList);
+  const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState(vendorList[0]);
-  const [selectedVendorId, setselectedVendorId] = useState(vendors[0].vendorId);
+  const [selectedVendorId, setselectedVendorId] = useState(vendorList[0]?.vendorId);
+  useEffect(() => {
+    if(data?.data.length > 0){
+      setVendors(data?.data);
+      if(vendors.length > 0){
+        setVendor(vendors[0]);
+        setselectedVendorId(vendors[0].vendorId)
+      }
+    }
+  },[vendors]);
 
+ 
   useEffect(() => {
     const selectedVendor = vendors.filter(
       (v) => v.vendorId === selectedVendorId
     )[0];
+    console.log('vendor changed ')
     setVendor(selectedVendor);
   }, [selectedVendorId]);
 
@@ -120,7 +136,7 @@ export default function Vendors() {
                 {vendors.map((v) => (
                   <VendorListItem
                     selectedVendor={setselectedVendorId}
-                    vendorName={v.vendorname}
+                    vendorName={v.name}
                     vendorId={v.vendorId}
                   />
                 ))}
@@ -134,19 +150,19 @@ export default function Vendors() {
                   label="Name"
                   name="vendorname"
                   variant="outlined"
-                  value={vendor && vendor.vendorname}
+                  value={vendor && vendor.name}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
                 <FormControl sx={{ m: 2, minWidth: 250 }}>
-                  <InputLabel id="budgetcategoryitemselectlabel">
+                  <InputLabel id="budgetCategoryItemIdlabel">
                     Budget Category Item
                   </InputLabel>
                   <Select
-                    labelId="budgetcategoryitemselectlabel"
-                    id="budgetcategoryitemselect"
+                    labelId="budgetCategoryItemIdlabel"
+                    id="budgetCategoryItemId"
                     label="Budget Category Item"
-                    name="budgetcategoryitemselect"
+                    name="budgetCategoryItemId"
                   >
                     <MenuItem value={"Bus"}>Bus</MenuItem>
                     <MenuItem value={"Snacks for the Bus"}>
@@ -171,11 +187,11 @@ export default function Vendors() {
                 </FormControl>
                 <TextField
                   sx={{ margin: 2 }}
-                  id="contactnumber"
+                  id="phone"
                   label="Hot Line"
                   variant="outlined"
-                  name="contactnumber"
-                  value={vendor && vendor.contactnumber}
+                  name="phone"
+                  value={vendor && vendor.phone}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
@@ -191,15 +207,15 @@ export default function Vendors() {
                 />
                 <TextField
                   sx={{ margin: 2 }}
-                  id="contactpersonname"
+                  id="contactName"
                   label="Contact Person Name"
                   variant="outlined"
-                  name="contactpersonname"
-                  value={vendor && vendor.contactpersonname}
+                  name="contactName"
+                  value={vendor && vendor.contactName}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
-                <TextField
+                {/* <TextField
                   sx={{ margin: 2 }}
                   id="designation"
                   label="Contact Designation"
@@ -208,40 +224,40 @@ export default function Vendors() {
                   value={vendor && vendor.designation}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
-                />
+                /> */}
                 <TextField
                   sx={{ margin: 2 }}
-                  id="totalcost"
+                  id="totalCost"
                   label="Total Cost"
                   variant="outlined"
-                  name="totalcost"
-                  value={vendor && vendor.totalcost}
+                  name="totalCost"
+                  value={vendor && vendor.totalCost}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
                 <TextField
                   sx={{ margin: 2 }}
-                  id="balance"
+                  id="balancePayment"
                   InputProps={{
                     readOnly: true,
                   }}
-                  label="Balance Remaining"
+                  label="balancePayment Remaining"
                   variant="outlined"
-                  name="balance"
-                  value={vendor && vendor.balance}
+                  name="balancePayment"
+                  value={vendor && vendor.balancePayment}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
                 <TextField
                   sx={{ margin: 2 }}
-                  id="paidtotal"
+                  id="payedAmount"
                   InputProps={{
                     readOnly: true,
                   }}
                   label="Paid Total"
                   variant="outlined"
-                  name="paidtotal"
-                  value={vendor && vendor.paidtotal}
+                  name="payedAmount"
+                  value={vendor && vendor.payedAmount}
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
@@ -250,8 +266,8 @@ export default function Vendors() {
                     control={
                       <Checkbox
                         defaultChecked
-                        id="vendorselected"
-                        name="vendorselected"
+                        id="S"
+                        name="S"
                       />
                     }
                     label="Vender Selected"
