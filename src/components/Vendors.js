@@ -14,15 +14,35 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
-import {useQuery} from 'react-query';
-import axios from 'axios';
+import { useQuery } from "react-query";
+import axios from "axios";
 export default function Vendors() {
   //need to fetch these dynamically and set the state var
-console.log('inside Vendors and going to load the vendors');
-  const {isLoading, data} = useQuery('getAllVendors',() => {
-      return axios.get('https://localhost:7115/vendors');
-  })
-  const vendorList = [
+  console.log("inside Vendors and going to load the vendors");
+  const fetchVendors = () => {
+    return axios.get("https://localhost:7115/vendors");
+  }
+  const onSuccess = (data) => {
+    
+    console.log('Perform side effect after fetching the data');
+    console.log(data?.data.length);
+    if (data?.data.length > 0) {
+      setVendors(data?.data);
+      if (vendors.length > 0) {
+        setVendor(vendors[0]);
+        setselectedVendorId(vendors[0].vendorId);
+      }
+    }
+  }
+
+  const onError = (error) => {
+    console.log('Perform side effect after failing to fetching the data');
+  }
+
+  const { isLoading, data, isError, error, isFetching, refetch } = useQuery("getAllVendors", fetchVendors , {onSuccess, onError});
+  //isFetchhing and refetch callback handlers can be used to bind loading of queries to click events
+
+  /* const vendorList = [
     {
       balancePayment: "1200",
       budgetCategoryItemId: "Snacks for the Bus",
@@ -75,26 +95,28 @@ console.log('inside Vendors and going to load the vendors');
       vendorId: 4,
       S: "on",
     },
-  ];
+  ]; */
   const [vendors, setVendors] = useState([]);
-  const [vendor, setVendor] = useState(vendorList[0]);
-  const [selectedVendorId, setselectedVendorId] = useState(vendorList[0]?.vendorId);
+  const [vendor, setVendor] = useState(vendors[0]);
+  const [selectedVendorId, setselectedVendorId] = useState(
+    vendors[0]?.vendorId
+  );
+  
   useEffect(() => {
-    if(data?.data.length > 0){
+    if (data?.data.length > 0) {
       setVendors(data?.data);
-      if(vendors.length > 0){
+      if (vendors.length > 0) {
         setVendor(vendors[0]);
-        setselectedVendorId(vendors[0].vendorId)
+        setselectedVendorId(vendors[0].vendorId);
       }
     }
-  },[vendors]);
+  }, [vendors]);
 
- 
   useEffect(() => {
     const selectedVendor = vendors.filter(
       (v) => v.vendorId === selectedVendorId
     )[0];
-    console.log('vendor changed ')
+    console.log("vendor changed ");
     setVendor(selectedVendor);
   }, [selectedVendorId]);
 
@@ -107,6 +129,10 @@ console.log('inside Vendors and going to load the vendors');
     const data = new FormData(event.currentTarget);
     //add other logic to update the DB here
   };
+
+  if(isError){
+    return <h2>{error.message}</h2>
+  }
 
   return (
     <Box
@@ -263,13 +289,7 @@ console.log('inside Vendors and going to load the vendors');
                 />
                 <FormGroup sx={{ margin: 2 }}>
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        defaultChecked
-                        id="S"
-                        name="S"
-                      />
-                    }
+                    control={<Checkbox defaultChecked id="S" name="S" />}
                     label="Vender Selected"
                   />
                 </FormGroup>
