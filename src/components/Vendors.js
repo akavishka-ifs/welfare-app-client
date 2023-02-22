@@ -14,17 +14,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
-import { useQuery } from "react-query";
-import axios from "axios";
+import { useGetAllVendorsData } from "../hooks/useGetAllVendorsData";
+
 export default function Vendors() {
-  //need to fetch these dynamically and set the state var
-  console.log("inside Vendors and going to load the vendors");
-  const fetchVendors = () => {
-    return axios.get("https://localhost:7115/vendors");
-  }
   const onSuccess = (data) => {
-    
-    console.log('Perform side effect after fetching the data');
+    console.log("Perform side effect after fetching the data");
     console.log(data?.data.length);
     if (data?.data.length > 0) {
       setVendors(data?.data);
@@ -33,75 +27,22 @@ export default function Vendors() {
         setselectedVendorId(vendors[0].vendorId);
       }
     }
-  }
+  };
 
   const onError = (error) => {
-    console.log('Perform side effect after failing to fetching the data');
-  }
+    console.log("Perform side effect after failing to fetching the data");
+  };
 
-  const { isLoading, data, isError, error, isFetching, refetch } = useQuery("getAllVendors", fetchVendors , {onSuccess, onError});
+  const { isLoading, data, isError, error, isFetching, refetch } =
+    useGetAllVendorsData(onSuccess, onError);
   //isFetchhing and refetch callback handlers can be used to bind loading of queries to click events
 
-  /* const vendorList = [
-    {
-      balancePayment: "1200",
-      budgetCategoryItemId: "Snacks for the Bus",
-      phone: "0112899099",
-      contactName: "Mr.Anurudda",
-      designation: "Manager",
-      email: "anna@gmail.com",
-      payedAmount: "",
-      totalCost: "3000",
-      vendorname: "FAB",
-      vendorId: 1,
-      vendorSelected: "on",
-    },
-    {
-      balancePayment: "50000",
-      budgetCategoryItemId: "Bus",
-      phone: "0112899094",
-      contactName: "Mr.Anuruddika",
-      designation: "Manager",
-      email: "annaaa@gmail.com",
-      payedAmount: "50000",
-      totalCost: "100000",
-      vendorname: "D.S.Gunasekara",
-      vendorId: 2,
-      S: "on",
-    },
-    {
-      balancePayment: "",
-      budgetCategoryItemId: "Liquor",
-      phone: "0112897099",
-      contactName: "Mr.Mewan",
-      designation: "Manager",
-      email: "anna9099@gmail.com",
-      payedAmount: "",
-      totalCost: "10000",
-      vendorname: "Ariyapala Wine Stores",
-      vendorId: 3,
-      S: "on",
-    },
-    {
-      balancePayment: "",
-      budgetCategoryItemId: "Room Reservation",
-      phone: "0112199099",
-      contactName: "Mr.Janik",
-      designation: "Asst-Manager",
-      email: "anna2ew2w@gmail.com",
-      payedAmount: "",
-      totalCost: "100000",
-      vendorname: "Shangrilla Hambantota",
-      vendorId: 4,
-      S: "on",
-    },
-  ]; */
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState(vendors[0]);
   const [selectedVendorId, setselectedVendorId] = useState(
     vendors[0]?.vendorId
   );
-  
+
   useEffect(() => {
     if (data?.data.length > 0) {
       setVendors(data?.data);
@@ -130,8 +71,8 @@ export default function Vendors() {
     //add other logic to update the DB here
   };
 
-  if(isError){
-    return <h2>{error.message}</h2>
+  if (isError) {
+    return <h2>{error.message}</h2>;
   }
 
   return (
