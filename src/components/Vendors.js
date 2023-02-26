@@ -14,12 +14,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
-import { useGetAllVendorsData } from "../hooks/useGetAllVendorsData";
+import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
 
 export default function Vendors() {
   const onSuccess = (data) => {
-    console.log("Perform side effect after fetching the data");
-    console.log(data?.data.length);
     if (data?.data.length > 0) {
       setVendors(data?.data);
       if (vendors.length > 0) {
@@ -30,13 +28,70 @@ export default function Vendors() {
   };
 
   const onError = (error) => {
-    console.log("Perform side effect after failing to fetching the data");
+    console.log(error)
   };
 
-  const { isLoading, data, isError, error, isFetching, refetch } =
-    useGetAllVendorsData(onSuccess, onError);
+  const onSuccessAdd = (data) => {
+    if (data?.data) {
+      setVendor(data?.data);
+      vendors.push(data?.data);
+      setselectedVendorId(data?.data.vendorId);
+    }
+
+  }
+
+  const onSuccessUpdate = (data) => {
+    setVendors(vendors.map(v => {
+      if (v.vendorId === data?.data.vendorId) {
+        return { ...v, balancePayment : data?.data.balancePayment,
+          budgetCategoryId : data?.data.budgetCategoryId,
+          budgetCategoryItemId : data?.data.budgetCategoryItemId,
+          contactName : data?.data.contactName,
+          email : data?.data.email,
+          name : data?.data.name,
+          payedAmount : data?.data.payedAmount,
+          phone : data?.data.phone,
+          totalCost : data?.data.totalCost,
+          vendorSelected : data?.data.vendorSelected };
+
+      } else {
+        // No changes
+        return v;
+      }
+    }));
+    setVendor(data?.data);
+    setselectedVendorId(data?.data.vendorId);
+    
+  }
+
+
+  const onSuccessDelete = () => {
+    vendors.pop(vendor);
+    if (vendors.length > 0) {
+      setVendor(vendors[0]);
+      setselectedVendorId(vendors[0].vendorId);
+    }
+  }
+
+  const onErrorAdd = (error) => {
+    console.log(error);
+  }
+
+  const onErrorUpdate = (error) => {
+    console.log(error);
+  }
+
+  const onErrorDelete = (error) => {
+    console.log(error);
+  }
+
+  const { isLoading, data, isError, error, isFetching, refetch } = useGetAllVendors(onSuccess, onError);
   //isFetchhing and refetch callback handlers can be used to bind loading of queries to click events
 
+  const {mutate : AddVendor} = useAddVendor(onSuccessAdd,onErrorAdd);
+  const {mutate : UpdateVendor} = useUpdateVendor(onSuccessUpdate,onErrorUpdate);
+  const {mutate : DeleteVendor} = useDeleteVendor(onSuccessDelete,onErrorDelete);
+  
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState(vendors[0]);
   const [selectedVendorId, setselectedVendorId] = useState(
@@ -51,15 +106,14 @@ export default function Vendors() {
         setselectedVendorId(vendors[0].vendorId);
       }
     }
-  }, [vendors]);
+  }, [data?.data]);
 
   useEffect(() => {
     const selectedVendor = vendors.filter(
       (v) => v.vendorId === selectedVendorId
     )[0];
-    console.log("vendor changed ");
     setVendor(selectedVendor);
-  }, [selectedVendorId]);
+  }, [selectedVendorId,vendors]);
 
   const onValueChange = (e) => {
     setVendor({ ...vendor, [e.target.name]: e.target.value });
@@ -67,9 +121,30 @@ export default function Vendors() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    //add other logic to update the DB here
+    UpdateVendor(vendor);
   };
+
+  
+  const handleAddVendorClick = () => {
+    const newVendor = {
+      balancePayment : 0,
+      budgetCategoryId : 1,
+      budgetCategoryItemId : 1,
+      contactName : '',
+      email : '',
+      name : 'Vendor_1',
+      payedAmount : 0,
+      phone : '',
+      totalCost : 0,
+      vendorSelected : false
+    };
+
+    AddVendor(newVendor);
+  }
+
+  const handleDeleteVendorClick = () => {
+    DeleteVendor(vendor);
+  }
 
   if (isError) {
     return <h2>{error.message}</h2>;
@@ -95,7 +170,7 @@ export default function Vendors() {
           <Grid container spacing={2} sx={{ p: 2 }} columns={12}>
             <Grid item xs={12} sx={{ border: 0, p: 0 }}>
               <Stack direction="row" spacing={2} sx={{ margin: 0 }}>
-                <Button variant="outlined">+Add</Button>
+                <Button variant="outlined" onClick={handleAddVendorClick}>+Add</Button>
               </Stack>
             </Grid>
             <Grid item xs={4} sx={{ border: 0, p: 2 }}>
@@ -115,7 +190,7 @@ export default function Vendors() {
                   sx={{ margin: 2 }}
                   id="vendorname"
                   label="Name"
-                  name="vendorname"
+                  name="name"
                   variant="outlined"
                   value={vendor && vendor.name}
                   InputLabelProps={{ shrink: vendor && true }}
@@ -238,7 +313,7 @@ export default function Vendors() {
                   <Button variant="outlined" type="submit">
                     Save
                   </Button>
-                  <Button variant="outlined">Delete</Button>
+                  <Button variant="outlined" onClick={handleDeleteVendorClick}>Delete</Button>
                 </Stack>
               </Box>
             </Grid>
