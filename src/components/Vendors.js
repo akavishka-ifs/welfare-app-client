@@ -17,9 +17,13 @@ import VendorListItem from "./VendorList";
 import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
 
 export default function Vendors() {
+  const [vendors, setVendors] = useState([]);
+  const [vendor, setVendor] = useState();
+  const [selectedVendorId, setselectedVendorId] = useState();
+
   const onSuccess = (data) => {
-    if (data?.data.length > 0) {
-      setVendors(data?.data);
+    if (data.data.length > 0) {
+      setVendors(data.data);
       if (vendors.length > 0) {
         setVendor(vendors[0]);
         setselectedVendorId(vendors[0].vendorId);
@@ -31,36 +35,38 @@ export default function Vendors() {
     console.log(error)
   };
 
+  const { isLoading, data, isError, error, isFetching, refetch } = useGetAllVendors(onSuccess, onError);
+
   const onSuccessAdd = (data) => {
-    if (data?.data) {
-      setVendor(data?.data);
-      vendors.push(data?.data);
-      setselectedVendorId(data?.data.vendorId);
+    if (data.data) {
+      setVendor(data.data);
+      vendors.push(data.data);
+      setselectedVendorId(data.data.vendorId);
     }
 
   }
 
   const onSuccessUpdate = (data) => {
     setVendors(vendors.map(v => {
-      if (v.vendorId === data?.data.vendorId) {
-        return { ...v, balancePayment : data?.data.balancePayment,
-          budgetCategoryId : data?.data.budgetCategoryId,
-          budgetCategoryItemId : data?.data.budgetCategoryItemId,
-          contactName : data?.data.contactName,
-          email : data?.data.email,
-          name : data?.data.name,
-          payedAmount : data?.data.payedAmount,
-          phone : data?.data.phone,
-          totalCost : data?.data.totalCost,
-          vendorSelected : data?.data.vendorSelected };
+      if (v.vendorId === data.data.vendorId) {
+        return { ...v, balancePayment : data.data.balancePayment,
+          budgetCategoryId : data.data.budgetCategoryId,
+          budgetCategoryItemId : data.data.budgetCategoryItemId,
+          contactName : data.data.contactName,
+          email : data.data.email,
+          name : data.data.name,
+          payedAmount : data.data.payedAmount,
+          phone : data.data.phone,
+          totalCost : data.data.totalCost,
+          vendorSelected : data.data.vendorSelected };
 
       } else {
         // No changes
         return v;
       }
     }));
-    setVendor(data?.data);
-    setselectedVendorId(data?.data.vendorId);
+    setVendor(data.data);
+    setselectedVendorId(data.data.vendorId);
     
   }
 
@@ -85,28 +91,22 @@ export default function Vendors() {
     console.log(error);
   }
 
-  const { isLoading, data, isError, error, isFetching, refetch } = useGetAllVendors(onSuccess, onError);
+
   //isFetchhing and refetch callback handlers can be used to bind loading of queries to click events
 
   const {mutate : AddVendor} = useAddVendor(onSuccessAdd,onErrorAdd);
   const {mutate : UpdateVendor} = useUpdateVendor(onSuccessUpdate,onErrorUpdate);
   const {mutate : DeleteVendor} = useDeleteVendor(onSuccessDelete,onErrorDelete);
-  
-  const [vendors, setVendors] = useState([]);
-  const [vendor, setVendor] = useState(vendors[0]);
-  const [selectedVendorId, setselectedVendorId] = useState(
-    vendors[0]?.vendorId
-  );
 
   useEffect(() => {
-    if (data?.data.length > 0) {
-      setVendors(data?.data);
+    if (data.data.length > 0) {
+      setVendors(data.data);
       if (vendors.length > 0) {
         setVendor(vendors[0]);
         setselectedVendorId(vendors[0].vendorId);
       }
     }
-  }, [data?.data]);
+  }, []);
 
   useEffect(() => {
     const selectedVendor = vendors.filter(
