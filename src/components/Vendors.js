@@ -257,16 +257,6 @@ export default function Vendors() {
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
-                {/* <TextField
-                  sx={{ margin: 2 }}
-                  id="designation"
-                  label="Contact Designation"
-                  variant="outlined"
-                  name="designation"
-                  value={vendor && vendor.designation}
-                  InputLabelProps={{ shrink: vendor && true }}
-                  onChange={(e) => onValueChange(e)}
-                /> */}
                 <TextField
                   sx={{ margin: 2 }}
                   id="totalCost"
@@ -283,7 +273,7 @@ export default function Vendors() {
                   InputProps={{
                     readOnly: true,
                   }}
-                  label="balancePayment Remaining"
+                  label="Remaining Balance"
                   variant="outlined"
                   name="balancePayment"
                   value={vendor && vendor.balancePayment}
@@ -303,12 +293,6 @@ export default function Vendors() {
                   InputLabelProps={{ shrink: vendor && true }}
                   onChange={(e) => onValueChange(e)}
                 />
-                <FormGroup sx={{ margin: 2 }}>
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked id="S" name="S" />}
-                    label="Vender Selected"
-                  />
-                </FormGroup>
                 <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
                   <Button variant="outlined" type="submit">
                     Save
