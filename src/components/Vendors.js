@@ -3,9 +3,6 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -14,14 +11,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
+//import { useTranslation } from 'react-i18next';
 import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
 
 export default function Vendors() {
+  //const { t, i18n } = useTranslation();
+
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState();
   const [selectedVendorId, setselectedVendorId] = useState();
 
   const onSuccess = (data) => {
+    console.log('Fetched Vendors Successfully!');
     if (data.data.length > 0) {
       setVendors(data.data);
       if (vendors.length > 0) {
@@ -35,7 +36,7 @@ export default function Vendors() {
     console.log(error)
   };
 
-  const { isLoading, data, isError, error, isFetching, refetch } = useGetAllVendors(onSuccess, onError);
+  const { data, isError, error} = useGetAllVendors(onSuccess, onError);
 
   const onSuccessAdd = (data) => {
     if (data.data) {
@@ -97,16 +98,6 @@ export default function Vendors() {
   const {mutate : AddVendor} = useAddVendor(onSuccessAdd,onErrorAdd);
   const {mutate : UpdateVendor} = useUpdateVendor(onSuccessUpdate,onErrorUpdate);
   const {mutate : DeleteVendor} = useDeleteVendor(onSuccessDelete,onErrorDelete);
-
-  useEffect(() => {
-    if (data.data.length > 0) {
-      setVendors(data.data);
-      if (vendors.length > 0) {
-        setVendor(vendors[0]);
-        setselectedVendorId(vendors[0].vendorId);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const selectedVendor = vendors.filter(
@@ -177,6 +168,7 @@ export default function Vendors() {
               <List>
                 {vendors.map((v) => (
                   <VendorListItem
+                    key = {v.vendorId}
                     selectedVendor={setselectedVendorId}
                     vendorName={v.name}
                     vendorId={v.vendorId}

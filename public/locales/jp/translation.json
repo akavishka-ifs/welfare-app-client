@@ -1,0 +1,19 @@
+{
+    "VENDORS": {
+      "ACTIONS": {
+        "ADD" : "追加",
+        "DELETE" : "消去",
+        "SAVE" : "保存"
+      },
+      "FILEDS": {
+        "NAME" : "名前",
+        "BUDGET_CATEGORY_ITEM" : "予算区分項目",
+        "HOTLINE" : "ホットライン",
+        "EMAIL" : "Eメール",
+        "CONTACT_PERSON_NAME" : "担当者名",
+        "TOTAL_COST" : "総費用",
+        "REMAINING_BALANCE" : "残金",
+        "PAID_TOTAL" : "支払った合計"
+      }
+    }
+  }

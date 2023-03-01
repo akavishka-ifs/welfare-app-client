@@ -1,0 +1,19 @@
+{
+    "VENDORS": {
+      "ACTIONS": {
+        "ADD" : "Ajouter",
+        "DELETE" : "Supprimer",
+        "SAVE" : "Sauvegarder"
+      },
+      "FILEDS": {
+        "NAME" : "Nom",
+        "BUDGET_CATEGORY_ITEM" : "Poste de la catégorie budgétaire",
+        "HOTLINE" : "Ligne directe",
+        "EMAIL" : "Email",
+        "CONTACT_PERSON_NAME" : "nom de contacte d'une personne",
+        "TOTAL_COST" : "Coût total",
+        "REMAINING_BALANCE" : "Solde restant",
+        "PAID_TOTAL" : "Total payé"
+      }
+    }
+  }

@@ -7,6 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 import AppContextProvider from "./contexts/AppContext";
 import { QueryClientProvider, QueryClient } from "react-query";
 import {ReactQueryDevtools} from 'react-query/devtools';
+// import i18n (needs to be bundled ;)) 
+import './i18n';
 
 const queryClient = new QueryClient();
 

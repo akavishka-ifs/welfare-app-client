@@ -1,0 +1,19 @@
+{
+    "VENDORS": {
+      "ACTIONS": {
+        "ADD" : "Add",
+        "DELETE" : "Delete",
+        "SAVE" : "Save"
+      },
+      "FILEDS": {
+        "NAME" : "Name",
+        "BUDGET_CATEGORY_ITEM" : "Budget Category Item",
+        "HOTLINE" : "Hot Line",
+        "EMAIL" : "Email",
+        "CONTACT_PERSON_NAME" : "Contact Person Name",
+        "TOTAL_COST" : "Total Cost",
+        "REMAINING_BALANCE" : "Remaning Balance",
+        "PAID_TOTAL" : "Paid Total"
+      }
+    }
+  }
