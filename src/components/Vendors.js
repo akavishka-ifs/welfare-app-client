@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -10,6 +11,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import FormHelperText from '@mui/material/FormHelperText';
+
+
 import VendorListItem from "./VendorList";
 import { useTranslation } from 'react-i18next';
 import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
@@ -20,6 +24,7 @@ export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState();
   const [selectedVendorId, setselectedVendorId] = useState();
+  const [lang, setlang] = useState('EN');
 
   const onSuccess = (data) => {
     console.log('Fetched Vendors Successfully!');
@@ -113,6 +118,10 @@ export default function Vendors() {
     UpdateVendor(vendor);
   };
 
+  const handleLangChange = (event) => {
+    i18n.changeLanguage(event.target.value);
+    setlang(event.target.value);
+  } 
   
   const handleAddVendorClick = () => {
     const newVendor = {
@@ -158,10 +167,25 @@ export default function Vendors() {
         >
           <Grid container spacing={2} sx={{ p: 2 }} columns={12}>
             <Grid item xs={12} sx={{ border: 0, p: 0 }}>
-              <Stack direction="row" spacing={2} sx={{ margin: 0 }}>
-                <Button variant="outlined" onClick={handleAddVendorClick}>+Add</Button>
+              <Stack direction="row" spacing={2} sx={{ margin: 0 }}> 
+                <FormControl sx={{ m: 1, }} size="small">
+                  <Select
+                    value={lang}
+                    onChange={handleLangChange}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    defaultValue={'en'}
+                    displayEmpty ={false}
+                  >
+                    <MenuItem value={'en'}>EN </MenuItem>
+                    <MenuItem value={'fr'}>FR</MenuItem>
+                    <MenuItem value={'jp'}>JP</MenuItem>
+                  </Select>
+                <FormHelperText>Preferred Language</FormHelperText>
+              </FormControl>
+
               </Stack>
             </Grid>
+            
             <Grid item xs={4} sx={{ border: 0, p: 2 }}>
               <List>
                 {vendors.map((v) => (
@@ -179,7 +203,7 @@ export default function Vendors() {
                 <TextField
                   sx={{ margin: 2 }}
                   id="vendorname"
-                  label="Name"
+                  label={t('VENDORS.FILEDS.NAME')}
                   name="name"
                   variant="outlined"
                   value={vendor && vendor.name}
@@ -188,12 +212,12 @@ export default function Vendors() {
                 />
                 <FormControl sx={{ m: 2, minWidth: 250 }}>
                   <InputLabel id="budgetCategoryItemIdlabel">
-                    Budget Category Item
+                  {t('VENDORS.FILEDS.BUDGET_CATEGORY_ITEM')}
                   </InputLabel>
                   <Select
                     labelId="budgetCategoryItemIdlabel"
                     id="budgetCategoryItemId"
-                    label="Budget Category Item"
+                    label={t('VENDORS.FILEDS.BUDGET_CATEGORY_ITEM')}
                     name="budgetCategoryItemId"
                   >
                     <MenuItem value={"Bus"}>Bus</MenuItem>
@@ -220,7 +244,7 @@ export default function Vendors() {
                 <TextField
                   sx={{ margin: 2 }}
                   id="phone"
-                  label="Hot Line"
+                  label={t('VENDORS.FILEDS.HOTLINE')}
                   variant="outlined"
                   name="phone"
                   value={vendor && vendor.phone}
@@ -230,7 +254,7 @@ export default function Vendors() {
                 <TextField
                   sx={{ margin: 2 }}
                   id="email"
-                  label="Email"
+                  label={t('VENDORS.FILEDS.EMAIL')}
                   variant="outlined"
                   name="email"
                   value={vendor && vendor.email}
@@ -240,7 +264,7 @@ export default function Vendors() {
                 <TextField
                   sx={{ margin: 2 }}
                   id="contactName"
-                  label="Contact Person Name"
+                  label={t('VENDORS.FILEDS.CONTACT_PERSON_NAME')}
                   variant="outlined"
                   name="contactName"
                   value={vendor && vendor.contactName}
@@ -250,7 +274,7 @@ export default function Vendors() {
                 <TextField
                   sx={{ margin: 2 }}
                   id="totalCost"
-                  label="Total Cost"
+                  label={t('VENDORS.FILEDS.TOTAL_COST')}
                   variant="outlined"
                   name="totalCost"
                   value={vendor && vendor.totalCost}
@@ -263,7 +287,7 @@ export default function Vendors() {
                   InputProps={{
                     readOnly: true,
                   }}
-                  label="Remaining Balance"
+                  label={t('VENDORS.FILEDS.REMAINING_BALANCE')}
                   variant="outlined"
                   name="balancePayment"
                   value={vendor && vendor.balancePayment}
@@ -276,7 +300,7 @@ export default function Vendors() {
                   InputProps={{
                     readOnly: true,
                   }}
-                  label="Paid Total"
+                  label={t('VENDORS.FILEDS.PAID_TOTAL')}
                   variant="outlined"
                   name="payedAmount"
                   value={vendor && vendor.payedAmount}
@@ -284,10 +308,12 @@ export default function Vendors() {
                   onChange={(e) => onValueChange(e)}
                 />
                 <Stack direction="row" spacing={2} sx={{ margin: 2 }}>
+                  <Button variant="outlined" onClick={handleAddVendorClick}>+{t('VENDORS.ACTIONS.ADD')}</Button>
                   <Button variant="outlined" type="submit">
-                    Save
+                  {t('VENDORS.ACTIONS.SAVE')}
                   </Button>
-                  <Button variant="outlined" onClick={handleDeleteVendorClick}>Delete</Button>
+                  <Button variant="outlined" onClick={handleDeleteVendorClick}>{t('VENDORS.ACTIONS.DELETE')}</Button>
+                  
                 </Stack>
               </Box>
             </Grid>
