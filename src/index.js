@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
@@ -21,7 +21,9 @@ root.render(
       {/*this component let's us use all the react router features in our app, also this is what mapps the url address with the navigation*/}
       <QueryClientProvider client={queryClient}>
         <AppContextProvider>
-          <App />
+        <Suspense fallback="loading">
+            <App />
+        </Suspense>
         </AppContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
       </QueryClientProvider>

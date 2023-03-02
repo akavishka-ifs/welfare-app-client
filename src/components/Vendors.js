@@ -11,11 +11,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import VendorListItem from "./VendorList";
-//import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
 
 export default function Vendors() {
-  //const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState();
@@ -25,10 +25,8 @@ export default function Vendors() {
     console.log('Fetched Vendors Successfully!');
     if (data.data.length > 0) {
       setVendors(data.data);
-      if (vendors.length > 0) {
-        setVendor(vendors[0]);
-        setselectedVendorId(vendors[0].vendorId);
-      }
+      setVendor(data.data[0]);
+      setselectedVendorId(data.data[0].vendorId);
     }
   };
 
@@ -104,7 +102,7 @@ export default function Vendors() {
       (v) => v.vendorId === selectedVendorId
     )[0];
     setVendor(selectedVendor);
-  }, [selectedVendorId,vendors]);
+  }, [vendor,vendors]);
 
   const onValueChange = (e) => {
     setVendor({ ...vendor, [e.target.name]: e.target.value });
@@ -141,7 +139,7 @@ export default function Vendors() {
     return <h2>{error.message}</h2>;
   }
 
-  return (
+  return vendor && (
     <Box
       sx={{
         display: "flex",
