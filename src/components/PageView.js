@@ -25,6 +25,7 @@ import Lookups from './Lookups';
 import Documents from './Documents';
 import Default from './Default';
 import Vendors from './Vendors';
+import RoomAllocations from './RoomAllocations';
 import Transactions from './Transactions';
 import EventAgenda from './EventAgenda';
 
@@ -229,6 +230,10 @@ function PageViewContent() {
               <Route 
               path = '/vendors'
               element = {<Vendors/>}
+              />
+              <Route 
+              path = '/roomallocations'
+              element = {<RoomAllocations/>}
               />
               <Route 
               path = '/transactions'

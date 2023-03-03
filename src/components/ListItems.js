@@ -32,6 +32,14 @@ export const mainListItems = (
         <ListItemText primary="Vendors" />
       </ListItemButton>
     </Link>
+    <Link to="/roomallocations">
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Room Allocations" />
+      </ListItemButton>
+    </Link>
     <Link to="/documents">
       <ListItemButton>
         <ListItemIcon>
@@ -61,9 +69,6 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
-      Room Allocation
-    </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
