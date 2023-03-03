@@ -26,6 +26,7 @@ import Documents from './Documents';
 import Default from './Default';
 import Vendors from './Vendors';
 import Transactions from './Transactions';
+import EventAgenda from './EventAgenda';
 
 function Copyright(props) {
   return (
@@ -232,6 +233,10 @@ function PageViewContent() {
               <Route 
               path = '/transactions'
               element = {<Transactions/>}
+              />
+              <Route 
+              path = '/agenda'
+              element = {<EventAgenda/>}
               />
                <Route 
               path = '/'

@@ -9,6 +9,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Link } from "react-router-dom";
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 
 export const mainListItems = (
   <React.Fragment>
@@ -45,6 +46,14 @@ export const mainListItems = (
           <PaidIcon />
         </ListItemIcon>
         <ListItemText primary="Transactions" />
+      </ListItemButton>
+    </Link>
+    <Link to="/agenda">
+      <ListItemButton>
+        <ListItemIcon>
+          <ViewAgendaIcon />
+        </ListItemIcon>
+        <ListItemText primary="Agenda" />
       </ListItemButton>
     </Link>
   </React.Fragment>
