@@ -107,9 +107,10 @@ export default function Vendors() {
       (v) => v.vendorId === selectedVendorId
     )[0];
     setVendor(selectedVendor);
-  }, [selectedVendorId, vendor]);
+  }, [selectedVendorId]);
 
   const onValueChange = (e) => {
+    console.log(vendor);
     setVendor({ ...vendor, [e.target.name]: e.target.value });
   };
 
@@ -178,7 +179,7 @@ export default function Vendors() {
                   >
                     <MenuItem value={'en'}>EN </MenuItem>
                     <MenuItem value={'fr'}>FR</MenuItem>
-                    <MenuItem value={'jp'}>JP</MenuItem>
+                    <MenuItem value={'ja'}>JP</MenuItem>
                   </Select>
                 <FormHelperText>Preferred Language</FormHelperText>
               </FormControl>
