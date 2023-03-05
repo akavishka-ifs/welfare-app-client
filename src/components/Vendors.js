@@ -110,7 +110,7 @@ export default function Vendors() {
   }, [selectedVendorId]);
 
   const onValueChange = (e) => {
-    console.log(vendor);
+    //console.log(vendor);
     setVendor({ ...vendor, [e.target.name]: e.target.value });
   };
 
