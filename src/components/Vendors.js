@@ -17,6 +17,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import VendorListItem from "./VendorList";
 import { useTranslation } from 'react-i18next';
 import { useGetAllVendors, useAddVendor, useUpdateVendor, useDeleteVendor } from "../hooks/useVendorsData";
+import { useGetAllCategoryItems } from "../hooks/useBudgetCategoryItemData";
 
 export default function Vendors() {
   const { t, i18n } = useTranslation();
@@ -24,6 +25,7 @@ export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [vendor, setVendor] = useState();
   const [selectedVendorId, setselectedVendorId] = useState();
+  const [categoryItems, setcategoryItems] = useState([]);
   const [lang, setlang] = useState('EN');
 
   const onSuccess = (data) => {
@@ -83,6 +85,18 @@ export default function Vendors() {
     }
   }
 
+  const onSuccessLoadCategoryItems = (data) => {
+    console.log('Fetched Budget Categories Successfully');  
+    console.log(data.data);
+    setcategoryItems(data.data);
+  }
+
+  const onErrorLoadCategoryItems = (error) => {
+    console.log(error);
+  }
+
+  const { data : CategoryItemLoadingdata, isError : CategoryItemLoadingisError, error : CategoryItemLoadingError} = useGetAllCategoryItems(onSuccessLoadCategoryItems, onErrorLoadCategoryItems);
+  
   const onErrorAdd = (error) => {
     console.log(error);
   }
@@ -221,25 +235,11 @@ export default function Vendors() {
                     label={t('VENDORS.FILEDS.BUDGET_CATEGORY_ITEM')}
                     name="budgetCategoryItemId"
                   >
-                    <MenuItem value={"Bus"}>Bus</MenuItem>
-                    <MenuItem value={"Snacks for the Bus"}>
-                      Snacks for the Bus
-                    </MenuItem>
-                    <MenuItem value={"Snacks for outdoor games"}>
-                      Snacks for outdoor games
-                    </MenuItem>
-                    <MenuItem value={"Toll booth Charges"}>
-                      Toll booth Charges
-                    </MenuItem>
-                    <MenuItem value={"Medicine for Emergencies"}>
-                      Medicine for Emergencies
-                    </MenuItem>
-                    <MenuItem value={"Snorkling Package"}>
-                      Snorkling Package
-                    </MenuItem>
-                    <MenuItem value={"Room Reservation"}>
-                      Room Reservation
-                    </MenuItem>
+                  {
+                    categoryItems && categoryItems.map((item) => {
+                    return (<MenuItem key={item.budgetItemId} value={item.budgetItemId}>{item.budgetItemName}</MenuItem>);
+                  })
+                  }
                   </Select>
                 </FormControl>
                 <TextField
