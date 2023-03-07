@@ -15,5 +15,20 @@
         "REMAINING_BALANCE" : "残金",
         "PAID_TOTAL" : "支払った合計"
       }
+    },
+
+    "EVENT_AGENDA": {
+      "ACTIONS": {
+        "ADD" : "足す",
+        "SAVE" : "セーブ"        
+      },
+      "FILEDS": {
+        "FROM" : "差出人",
+        "TO" : "宛先",
+        "EVENT": "出来事",
+        "START_DATE_TIME": "開始日時",
+        "END_DATE_TIME": "終了日時",
+        "EVENT_DESC": "イベントの説明"
+      }
     }
   }

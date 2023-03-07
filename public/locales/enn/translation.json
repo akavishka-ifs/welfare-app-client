@@ -15,5 +15,20 @@
         "REMAINING_BALANCE" : "Remaning Balance",
         "PAID_TOTAL" : "Paid Total"
       }
+    },
+
+    "EVENT_AGENDA": {
+      "ACTIONS": {
+        "ADD" : "Add",
+        "SAVE" : "Save"        
+      },
+      "FILEDS": {
+        "FROM" : "FROM",
+        "TO" : "TO",
+        "EVENT": "EVENT",
+        "START_DATE_TIME": "Start Date Time",
+        "END_DATE_TIME": "End Date Time",
+        "EVENT_DESC": "Event Description"
+      }
     }
   }

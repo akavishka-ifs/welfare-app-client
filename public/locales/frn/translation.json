@@ -15,5 +15,20 @@
         "REMAINING_BALANCE" : "Solde restant",
         "PAID_TOTAL" : "Total payé"
       }
+    },
+
+    "EVENT_AGENDA": {
+      "ACTIONS": {
+        "ADD" : "ajouter",
+        "SAVE" : "sauvegarder"        
+      },
+      "FILEDS": {
+        "FROM" : "De",
+        "TO" : "À",
+        "EVENT": "événement",
+        "START_DATE_TIME": "Date de début Heure",
+        "END_DATE_TIME": "Date de fin Heure",
+        "EVENT_DESC": "Description de l’événement"
+      }
     }
   }
