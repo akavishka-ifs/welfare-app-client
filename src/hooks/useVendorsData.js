@@ -10,6 +10,7 @@ const addVendor = (vendor) => {
 }
 
 const updateVendor = (vendor) => {
+  console.log('vendor in axios : ',vendor);
   return axios.put(`https://localhost:7115/vendors/${vendor.vendorId}`,vendor);
 }
 

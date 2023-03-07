@@ -26,7 +26,20 @@ export default function Vendors() {
   const [vendor, setVendor] = useState();
   const [selectedVendorId, setselectedVendorId] = useState();
   const [categoryItems, setcategoryItems] = useState([]);
+  const [selectedCategoryItem , setselectedCategoryItem] = useState();
   const [lang, setlang] = useState('EN');
+
+  const onSuccessLoadCategoryItems = (data) => {
+    console.log('Fetched Budget Categories Successfully');  
+    console.log(data.data);
+    setcategoryItems(data.data);
+  }
+
+  const onErrorLoadCategoryItems = (error) => {
+    console.log(error);
+  }
+
+  const { data : CategoryItemLoadingdata, isError : CategoryItemLoadingisError, error : CategoryItemLoadingError} = useGetAllCategoryItems(onSuccessLoadCategoryItems, onErrorLoadCategoryItems);
 
   const onSuccess = (data) => {
     console.log('Fetched Vendors Successfully!');
@@ -34,7 +47,15 @@ export default function Vendors() {
       setVendors(data.data);
       setVendor(data.data[0]);
       setselectedVendorId(data.data[0].vendorId);
+
+      /* categoryItems.forEach((c) => {
+        if(c.budgetItemId === vendor.budgetCategoryItemId){
+          console.log('setting the category Item for the selected vendor');
+          setselectedCategoryItem(c.budgetItemName);
+        }
+      }); */
     }
+    console.log('selectedCategoryItem : ', selectedCategoryItem);
   };
 
   const onError = (error) => {
@@ -74,6 +95,8 @@ export default function Vendors() {
     setVendor(data.data);
     setselectedVendorId(data.data.vendorId);
     
+    console.log('After getting the updated from DB : ',data.data);
+    
   }
 
 
@@ -84,18 +107,6 @@ export default function Vendors() {
       setselectedVendorId(vendors[0].vendorId);
     }
   }
-
-  const onSuccessLoadCategoryItems = (data) => {
-    console.log('Fetched Budget Categories Successfully');  
-    console.log(data.data);
-    setcategoryItems(data.data);
-  }
-
-  const onErrorLoadCategoryItems = (error) => {
-    console.log(error);
-  }
-
-  const { data : CategoryItemLoadingdata, isError : CategoryItemLoadingisError, error : CategoryItemLoadingError} = useGetAllCategoryItems(onSuccessLoadCategoryItems, onErrorLoadCategoryItems);
   
   const onErrorAdd = (error) => {
     console.log(error);
@@ -117,19 +128,37 @@ export default function Vendors() {
   const {mutate : DeleteVendor} = useDeleteVendor(onSuccessDelete,onErrorDelete);
 
   useEffect(() => {
+    console.log('selectedCategoryItem : ', selectedCategoryItem);
     const selectedVendor = vendors.filter(
       (v) => v.vendorId === selectedVendorId
     )[0];
     setVendor(selectedVendor);
+    
+  /*  categoryItems.map((c) => {
+      if(c.budgetItemId === vendor.budgetCategoryItemId){
+        setselectedCategoryItem(c.budgetItemName);
+        console.log('changing to categoryitem to : ',c.budgetItemName);
+      }
+    });  */
+
   }, [selectedVendorId]);
 
   const onValueChange = (e) => {
-    //console.log(vendor);
-    setVendor({ ...vendor, [e.target.name]: e.target.value });
+    /* if(e.target.name === "budgetCategoryItemId"){
+      categoryItems.map((v) => {
+        if(v.budgetItemName === e.target.value){
+          console.log('mapping the correct value : ', v.budgetItemId);
+          setVendor({...vendor, budgetCategoryItemId : v.budgetItemId});
+          e.target.value = v.budgetItemId;
+        }  
+      });
+    } */
+    setVendor({ ...vendor, [e.target.name] : e.target.value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log('Vendor before updating : ',vendor);
     UpdateVendor(vendor);
   };
 
@@ -142,7 +171,7 @@ export default function Vendors() {
     const newVendor = {
       balancePayment : 0,
       budgetCategoryId : 1,
-      budgetCategoryItemId : 1,
+      budgetCategoryItemId : '',
       contactName : '',
       email : '',
       name : 'Vendor_1',
@@ -197,7 +226,6 @@ export default function Vendors() {
                   </Select>
                 <FormHelperText>Preferred Language</FormHelperText>
               </FormControl>
-
               </Stack>
             </Grid>
             
@@ -230,14 +258,17 @@ export default function Vendors() {
                   {t('VENDORS.FILEDS.BUDGET_CATEGORY_ITEM')}
                   </InputLabel>
                   <Select
+                    defaultValue="1"
                     labelId="budgetCategoryItemIdlabel"
                     id="budgetCategoryItemId"
                     label={t('VENDORS.FILEDS.BUDGET_CATEGORY_ITEM')}
                     name="budgetCategoryItemId"
+                    onChange={(e) => onValueChange(e)}
+                    value = {vendor && vendor.budgetCategoryItemId}
                   >
                   {
                     categoryItems && categoryItems.map((item) => {
-                    return (<MenuItem key={item.budgetItemId} value={item.budgetItemId}>{item.budgetItemName}</MenuItem>);
+                    return (<MenuItem key={item.budgetItemId} value={item.budgetItemName}>{item.budgetItemName}</MenuItem>);
                   })
                   }
                   </Select>
