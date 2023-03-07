@@ -5,6 +5,9 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
     const [username, setUserName] = useState("");
     const [isAuthenticated, setAuthenticated] = useState(false);
+    
+    const [events, setEvents] = useState([]);
+    const [lang, setlang] = useState('EN');
 
     const logIn = ({username , isAuthenticated}) => {
         setUserName(username);
@@ -16,7 +19,7 @@ const AppContextProvider = (props) => {
         setAuthenticated(false);
     }
 
-    return(<AppContext.Provider value={{username, isAuthenticated , logIn, logOut}}>{props.children}</AppContext.Provider>);
+    return(<AppContext.Provider value={{username, isAuthenticated , logIn, logOut, events, setEvents, lang, setlang}}>{props.children}</AppContext.Provider>);
 };
 
 export default AppContextProvider;

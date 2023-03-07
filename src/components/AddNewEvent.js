@@ -11,6 +11,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Stack from "@mui/material/Stack";
 import { useAddEvent, useUpdateEvent } from "../hooks/useAgendaData";
 import EditIcon from '@mui/icons-material/Edit';
+import { AppContext } from '../contexts/AppContext';
+import { useTranslation } from 'react-i18next';
 
 const style = {
   position: 'absolute',
@@ -20,21 +22,22 @@ const style = {
   width: 650,
 };
 
-export default function AddNewEvent({passEvent}) {
+export default function AddNewEvent({passEvent, convertFormatDate}) {
+    const {events, setEvents} = React.useContext(AppContext); 
+    const {lang, setlang} = React.useContext(AppContext); 
+  
+    const { t, i18n } = useTranslation();
+
     // For Modal popup
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const {format} = require('date-fns');
-
     const [startTime, setStartTime] = React.useState(Date());
     const [endTime, setEndTime] = React.useState(Date());
     const [desc, setDesc] = React.useState('');
 
-    const [events, setEvents] = React.useState([]);
     const [event, setEvent] = useState();
-    const [selectedEventId, setSelectedEventId] = useState();
 
     const [opType, setOpType] = useState();
     const [eventIDForUpdate, setEventIDForUpdate] = useState();
@@ -78,9 +81,14 @@ const handleAddEventClick = () => {
 
 const onSuccessAdd = (data) => {
     if (data.data) {
-      setEvents(data.data);
-      events.push(data.data);
-      setSelectedEventId(data.data.eventID);
+      console.log(data.data);
+
+      console.log(events);
+      setEvent(data.data);
+
+      setEvents(events.push(data.data));
+      convertFormatDate();
+      // console.log(events);
       setOpen(false);
     }
 }
@@ -89,14 +97,29 @@ const onErrorAdd = (error) => {
     console.log(error);
 }
 
-const onSuccessUpdate = (data) => {}
+const onSuccessUpdate = (data) => {
+  // console.log(data);
+  setEvents(events.map((event) => {
+      if (event.eventID === data.data.eventID) {
+          event.startTime = data.data.startTime;
+          event.endTime = data.data.endTime;
+          event.description = data.data.description;
+          event.convertedStartTime = null;
+          event.convertedEndTime = null;
+      }
+    }));
+    convertFormatDate();
+
+    console.log(events);
+    setOpen(false);
+  }
+
+
 const onErrorUpdate = (data) => {}
 
 const {mutate : AddEvent} = useAddEvent(onSuccessAdd,onErrorAdd);
 const {mutate : UpdateEvent} = useUpdateEvent(onSuccessUpdate,onErrorUpdate);
 
-
-// ****************************************************
 
 if (opType === "add"){
   var butType = <Button aria-label="add" onClick={handleOpen}> <AddIcon /> </Button>
@@ -113,10 +136,10 @@ else{
 }
 
 if (opType ==="add"){
-  var butDecide = <Button variant="contained" onClick={handleAddEventClick}>+ Add</Button>
+  var butDecide = <Button variant="contained" onClick={handleAddEventClick}> {t('EVENT_AGENDA.ACTIONS.ADD')} </Button>
 }
 else{
-  var butDecide = <Button variant="contained" onClick={handleUpdateEventClick}> Save </Button>
+  var butDecide = <Button variant="contained" onClick={handleUpdateEventClick}> {t('EVENT_AGENDA.ACTIONS.SAVE')} </Button>
 }
 
 return (
@@ -137,12 +160,13 @@ return (
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
                             renderInput={(props) => <TextField {...props} />}
-                            label="Start Date Time"
+                            label={t('EVENT_AGENDA.FILEDS.START_DATE_TIME')}
+                            // label="Start Date Time"
                             id = "startTime"
                             name = "startTime"
                             value={startTime}
                             onChange={(newStartTime) => {
-                                setStartTime(`${format(newStartTime, "yyyy-MM-dd'T'HH:MM:SS.SSS'Z'")}`);
+                                setStartTime(newStartTime.toISOString());
                                 console.log(startTime);
                             }}
                     />
@@ -153,10 +177,11 @@ return (
                         renderInput={(props) => <TextField {...props} />}
                         id = "endTime"
                         name = "endTime"
-                        label="End Date Time"
+                        label={t('EVENT_AGENDA.FILEDS.END_DATE_TIME')}
+                        // label="End Date Time"
                         value={endTime}
                         onChange={(newEndTime) => {
-                            setEndTime(`${format(newEndTime, "yyyy-MM-dd'T'HH:MM:SS.SSS'Z'")}`);
+                            setEndTime(newEndTime.toISOString());
                             console.log(endTime);
                         }}
                     />
@@ -165,7 +190,8 @@ return (
                     <TextField
                         sx={{ margin: 0.1 }}
                         id="eventDesc"
-                        label="Event Description"
+                        label={t('EVENT_AGENDA.FILEDS.EVENT_DESC')}
+                        // label="Event Description"
                         variant="outlined"
                         name="eventDesc"
                         value = {desc}

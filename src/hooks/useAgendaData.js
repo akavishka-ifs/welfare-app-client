@@ -22,6 +22,7 @@ const deleteEvent = (event) => {
 
 export const useGetAllEvents= (onSuccess, onError) => {
   return useQuery("getAllEvents", fetchEvents, { onSuccess, onError });
+  // return useQuery("getAllEvents", fetchEvents, { onSuccess, onError, refetchInterval : 7000 });
 };
 
 export const useAddEvent = (onSuccess, onError) => {
