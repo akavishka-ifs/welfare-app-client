@@ -31,7 +31,7 @@ export default function Vendors() {
 
   const onSuccessLoadCategoryItems = (data) => {
     console.log('Fetched Budget Categories Successfully');  
-    console.log(data.data);
+    //console.log(data.data);
     setcategoryItems(data.data);
   }
 

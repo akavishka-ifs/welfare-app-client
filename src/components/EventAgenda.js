@@ -31,6 +31,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 // import { TextField } from '@mui/material';
 // import { Description } from '@mui/icons-material';
 // import { parse } from 'date-fns';
@@ -44,7 +45,7 @@ interface Column {
     align?: 'right';
   }
 
-const columns: Column[] = [
+const columns = [
     // { id: 'eventID', label: 'Event ID', minWidth: 80 },
     { id: 'convertedStartTime', label: 'EVENT_AGENDA.FILEDS.FROM', minWidth: 220 },
     { id: 'convertedEndTime', label: 'EVENT_AGENDA.FILEDS.TO', minWidth: 220 },
@@ -63,6 +64,7 @@ const locales = { 'en-us': enUS, 'en-gb': enGB, 'zh-cn': zhCN, 'de': de };
 // type LocaleKey = keyof typeof locales;
 
 export default function EventAgenda(props) {
+    
         const [selectedTimezone, setSelectedTimezone] = useState({});
         // const [locale, setLocale] = React.useState<LocaleKey>('en-us');
         const [locale, setLocale] = React.useState("en-us");
@@ -256,7 +258,7 @@ export default function EventAgenda(props) {
                         >
                         <option value={'en'}>EN </option>
                         <option value={'fr'}>FR</option>
-                        <option value={'jp'}>JP</option>
+                        <option value={'ja'}>JP</option>
                         </NativeSelect>
                     </FormControl>
                     </TableCell>
